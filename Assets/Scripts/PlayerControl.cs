@@ -13,27 +13,14 @@ public class PlayerControl : MonoBehaviour {
 		anim = transform.GetComponent<Animator> ();
 	}
 
-//	void Start()
-//	{
-//		InvokeRepeating ("UpdateSpeed", 1f, 1f);
-//	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Jump();
-        }
-        //if(Input.GetKeyDown(KeyCode.N))
-        //{
-        //    Boost();
-        //}
-        float move = CrossPlatformInput.GetAxis("Horizontal");
-        //#if CROSS_PLATFORM_INPUT
-        //    float move = CrossPlatformInput.GetAxis("Horizontal");
-        //#else
-        //    float move = Input.GetAxis("Horizontal");
-        //#endif
+        #if CROSS_PLATFORM_INPUT
+            float move = CrossPlatformInput.GetAxis("Horizontal");
+        #else
+            float move = Input.GetAxis("Horizontal");
+        #endif
         rigidbody2D.velocity = new Vector2 (move * moveSpeed * Time.fixedDeltaTime, rigidbody2D.velocity.y);
 		anim.SetFloat ("vSpeed", rigidbody2D.velocity.y);
 		anim.SetBool ("isGrounded", isGrounded);
@@ -41,9 +28,10 @@ public class PlayerControl : MonoBehaviour {
 
 	void Jump()
 	{
-		rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpVel);
-		isGrounded = false;
-		audio.clip = jump [Random.Range (0, jump.Length)];
+		//add positive velocity in y-axis
+		rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpVel * Time.deltaTime);
+		isGrounded = false;		//make isGrounded parameter to false
+		audio.clip = jump [Random.Range (0, jump.Length)];		//play a random jump sound with a random pitch
 		audio.pitch = Random.Range(0.9f,1.1f);
 		audio.Play();
 	}
@@ -94,9 +82,4 @@ public class PlayerControl : MonoBehaviour {
     {
         audio.enabled = !audio.enabled;
     }
-	
-//	void UpdateSpeed()
-//	{
-//		jumpVel = jumpVel*1.001f;
-//	}
 }

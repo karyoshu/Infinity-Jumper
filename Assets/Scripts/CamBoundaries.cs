@@ -14,9 +14,6 @@ public class CamBoundaries : MonoBehaviour {
 	{
 		mainCam = Camera.main;
 	}
-	// Update is called once per frame
-	void Start () {
-	}
 
 	void Update()
 	{
