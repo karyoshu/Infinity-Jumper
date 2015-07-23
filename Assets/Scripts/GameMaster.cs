@@ -12,97 +12,97 @@ public enum GameState
 }
 
 public class GameMaster : MonoBehaviour {
-	public GUISkin skin;			//refrence to the GUI skin
-	static GameState gameState = GameState.NotPlaying;		//setting game state to main menu
-	static int score = 0;			//setting score to 0
-	int tempScore;					//variable to store intermediate score
-	MoveUp cameraMove;				//refrence to moveup script of camera
-	public Rigidbody2D player;				//refrence to rigidbody of player
-	float startTime;				//variable to store start time
-	Pauser pauser;					//refrence to pauser script
-	Camera cam;						//refrence to main camera
-	public Transform blockParentPrefab;		//refrence to block parent prefab
-	public Transform blockParentPlatformPrefab;		//refrence to block parent prefab
-    public Transform blockParent;			//refrence to block parent transform
-    public Transform blockParentPlatform;			//refrence to block parent transform
-	float soundLevel;				//varable to store sound level
-	string controlType;				//varaible to store control type
-	public GameObject tiltControlGameObject;		//refrence to tilt control
-    public GameObject buttonControlGameObject;		//refrence to button control
-	public static GameMaster gm;		//reference to self object
-    public Text scoreGUI;
-    public Text hiScoreGUI;
-    public GameObject controlReversed;
-    public Text controlReversedCount;
+	//setting game state to not playing
+	static GameState gameState = GameState.NotPlaying;	
+	static int score = 0;						//setting score to 0
+	int tempScore;								//variable to store intermediate score
+	public Rigidbody2D player;					//reference to rigidbody of player
+	float startTime;							//variable to store start time
+	Pauser pauser;								//reference to pauser script
+	Camera cam;									//reference to main camera
+	public Transform blockParentPrefab;			//reference to block parent prefab
+	public Transform blockParentPlatformPrefab;	//reference to block parent prefab
+    public Transform blockParent;				//reference to block parent transform
+    public Transform blockParentPlatform;		//reference to block parent transform
+	float soundLevel;							//variable to store sound level
+	string controlType;							//variable to store control type
+	public GameObject tiltControlGameObject;	//reference to tilt control
+    public GameObject buttonControlGameObject;	//reference to button control
+	public static GameMaster gm;				//reference to self object
+    public Text scoreGUI;						//reference to score's Text component
+    public Text hiScoreGUI;						//reference to hi-score's Text component
+    public GameObject controlReversed;			//reference to controlReversed label gameObject
+    public Text controlReversedCount;			//reference to controlReversed label's count Text component
 
-    public bool greenOrBlueBallTaken = false;
-    public int numRedBallsTaken = 0;
+    public bool greenOrBlueBallTaken = false;	//if green or blue ball has been taken or not
+    public int numRedBallsTaken = 0;			//no of red balls taken since game started
 
-    ScreenManager scrnMngr;
-    public Animator mainMenuCanvas;
-    //public Canvas playingCanvas;
-    public Slider musicSlider;
+    ScreenManager screenManager;				//reference to screen manager
+    public Animator mainMenuCanvas;				//reference to mainMenuCanvas animator
+    public Slider musicSlider;					//reference to music slider
+	
 	void Awake()
 	{
-		cameraMove = Camera.main.GetComponent<MoveUp> ();
-		pauser = gameObject.GetComponent<Pauser> ();
-		cam = Camera.main;
-		soundLevel = PlayerPrefs.GetFloat ("SoundLevel");		//getting sound level from player prefrence
-		controlType = PlayerPrefs.GetString ("ControlType");	//getting control type from player prefrence
-		Screen.sleepTimeout = SleepTimeout.NeverSleep;			//stop screen to timeout
+		//to create a singleton class
 		if(gm == null)
 			gm = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameMaster> ();
-		HighScore.getHighScore ();
-        Application.targetFrameRate = 300;
-        PlayGamesPlatform.Activate();
-        scrnMngr = gameObject.GetComponent<ScreenManager>();
+		pauser = gameObject.GetComponent<Pauser> ();
+		cam = Camera.main;
+		soundLevel = PlayerPrefs.GetFloat ("SoundLevel");		//getting sound level from player preference
+		controlType = PlayerPrefs.GetString ("ControlType");	//getting control type from player preference
+		Screen.sleepTimeout = SleepTimeout.NeverSleep;			//stop screen from timing out
+		HighScore.getHighScore ();								//getting highScore into HighScore 
+        PlayGamesPlatform.Activate();							 
+        screenManager = gameObject.GetComponent<ScreenManager>();
 	}
-	// Use this for initialization
+	
 	void Start () {
 		if (string.IsNullOrEmpty(controlType)) {
-			controlType = "Tilt";
+			controlType = "Tilt";		//if no control is set, set it to tilt by default
 		}
+		//setting Active property both type of controls to false as they will be activated in Update() method
 		tiltControlGameObject.SetActive (false);
 		buttonControlGameObject.SetActive (false);
+		
         musicSlider.value = soundLevel;
-
+		//Authenticating user
         Social.localUser.Authenticate((bool success) =>
         {
-            scrnMngr.OpenPanel(mainMenuCanvas);
+            screenManager.OpenPanel(mainMenuCanvas);
         });
 	}
 	
-	// Update is called once per frame
 	void Update () {
 		switch (gameState)
 		{
-		case GameState.Playing:
-			pauser.paused = false;
-			tempScore = (int)((Time.time - startTime) * 10) + (int)(player.position.y * 1.5);
-			if(tempScore > score)
-				score = tempScore;
-			if(controlType == "Button")
-				buttonControlGameObject.SetActive(true);
-			else
-				tiltControlGameObject.SetActive(true);
-			break;
-		default:
-			pauser.paused = true;
-            buttonControlGameObject.SetActive(false);
-            tiltControlGameObject.SetActive(false);
-			break;
+			case GameState.Playing:
+			//if Gamestate is playing
+				pauser.paused = false;	//unpause the game
+				tempScore = (int)((Time.time - startTime) * 10) + (int)(player.position.y * 1.5);	//update the tempScore
+				if(tempScore > score)
+					score = tempScore;		//assign tempScore to score
+				if(controlType == "Button")
+					buttonControlGameObject.SetActive(true);	//activate controls
+				else
+					tiltControlGameObject.SetActive(true);
+				break;
+			default:
+				pauser.paused = true;
+				buttonControlGameObject.SetActive(false);
+				tiltControlGameObject.SetActive(false);
+				break;
 		}
-		PlayerPrefs.SetFloat("SoundLevel", soundLevel);
+		PlayerPrefs.SetFloat("SoundLevel", soundLevel);		//set sound level
         if (scoreGUI != null && hiScoreGUI != null)
         {
             if (score > HighScore.highScore)
-                HighScore.highScore = score;
+                HighScore.highScore = score;				//set highScore
             scoreGUI.text = score.ToString();
             hiScoreGUI.text = HighScore.highScore.ToString();            
         }
         
         //unlock achievements
-        unlockAchievements(score);
+        unlockAchievements(score);			//unlock achievements
     }
 
     public void SetControlType(int control)
@@ -113,6 +113,7 @@ public class GameMaster : MonoBehaviour {
             controlType = "Tilt";
         PlayerPrefs.SetString("ControlType", controlType);
     }
+	
 	public void ChangeState(int newState)
 	{
 		gameState = (GameState)newState;
@@ -120,6 +121,7 @@ public class GameMaster : MonoBehaviour {
 
 	IEnumerator CountDown()
 	{
+		//this method is used to display control reversed label when red ball is taken by player
         controlReversed.SetActive(true);
         controlReversedCount = controlReversed.GetComponentInChildren<Text>();
         for (int i = 5; i > 0; i--)
@@ -142,6 +144,7 @@ public class GameMaster : MonoBehaviour {
 
 	public void Reset()
 	{
+		//this method resets all the variables, player position, camera position, destroy and recreate background and platforms at origin
 		score = 0;
         greenOrBlueBallTaken = false;
         numRedBallsTaken = 0;
@@ -171,6 +174,7 @@ public class GameMaster : MonoBehaviour {
     {
         audio.enabled = !audio.enabled;
     }
+	
     public void QuitGame()
     {
         Application.Quit();
@@ -188,6 +192,7 @@ public class GameMaster : MonoBehaviour {
 
     public void unlockAchievements(int highScore)
     {
+		//this function unlocks achievements based on score and other scenarios
         if ((highScore >= 20000 
             && PlayerPrefs.GetInt("ach01") == 1 
             && PlayerPrefs.GetInt("ach02") == 1 
@@ -197,6 +202,7 @@ public class GameMaster : MonoBehaviour {
             && PlayerPrefs.GetInt("ach06") == 1 
             && PlayerPrefs.GetInt("ach07") == 1) 
             || PlayerPrefs.GetInt("ach08") == 1)
+		//if highScore is greater than 20000 and all other achievements are unlocked, then unlock achievement 8
         {
             PlayerPrefs.SetInt("ach08", 1);
             Social.ReportProgress("CgkIhLabw8YREAIQCQ", 100.0f, (bool success) =>

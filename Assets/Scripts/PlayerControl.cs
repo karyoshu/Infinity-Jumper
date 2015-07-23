@@ -2,12 +2,12 @@
 using System.Collections;
 
 public class PlayerControl : MonoBehaviour {
-	Animator anim;
-	public float jumpVel = 7;
-	public bool isGrounded = true;
-	public float moveSpeed = 200;
-	public AudioClip[] jump;
-    public static bool Boosted = false;
+	Animator anim;						//reference to Animator component on player
+	public float jumpVel = 7;			//jump velocity by which player goes up
+	public bool isGrounded = true;		//to check if player touched the ground or not
+	public float moveSpeed = 200;		//player movement speed sideways
+	public AudioClip[] jump;			//array containing jump audio clips
+    public static bool Boosted = false;	//to check if player was recently boosted or not
 	// Use this for initialization
 	void Awake () {
 		anim = transform.GetComponent<Animator> ();
@@ -38,6 +38,7 @@ public class PlayerControl : MonoBehaviour {
 
     IEnumerator Boost()
 	{
+		//boosts the player on taking green ball
         if(rigidbody2D.velocity.y < 0)
 		    rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 20);
         else
@@ -50,6 +51,7 @@ public class PlayerControl : MonoBehaviour {
 
     IEnumerator SuperBoost()
 	{
+		//super boosts player on taking blue ball
         if (rigidbody2D.velocity.y < 0)
             rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 30);
         else
@@ -62,6 +64,7 @@ public class PlayerControl : MonoBehaviour {
 
 	IEnumerator InvertControl()
 	{
+		//invert player controls
 		Invert ();
         yield return new WaitForSeconds(5);
         if (moveSpeed < 0)

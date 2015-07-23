@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class PowerRed : MonoBehaviour {
+	//script attached to red powerup that calls InvertControl method of player
 	GameObject player;
 	PlayerControl playerControl;
 

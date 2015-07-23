@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class PowerGreen : MonoBehaviour {
+	//script attached to green powerup that calls Boost method of player
 	GameObject player;
 	PlayerControl playerControl;
 	

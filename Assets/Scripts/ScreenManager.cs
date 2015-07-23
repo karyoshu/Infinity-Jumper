@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿//this script is supplied by Unity
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;

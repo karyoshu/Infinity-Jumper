@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class PowerBlue : MonoBehaviour {
+	//script attached to blue powerup that calls SuperBoost method of player
 	GameObject player;
 	PlayerControl playerControl;
 	

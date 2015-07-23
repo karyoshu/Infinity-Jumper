@@ -2,15 +2,13 @@
 using System.Collections;
 
 public class Pauser : MonoBehaviour {
+	//this script is used to pause/unpause game and increase game speed over time
 	public bool paused = true;
 	public float timeScale = 1;
     float camSpeed = 2;
     public Rigidbody2D player;
     MoveUp cameraSpeed;
-    void Awake()
-    {
-        
-    }
+	
 	void Start()
 	{
 		InvokeRepeating ("IncreaseTimeScale", 1, 15);

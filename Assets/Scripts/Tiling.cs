@@ -29,7 +29,7 @@ public class Tiling : MonoBehaviour {
 		if(!hasATopBuddy)	//if current sprite doesn't have a top background sprite
 		{
 			float camVerticalExtend = cam.orthographicSize * Screen.height/Screen.width;		//setting up camera's Vertical extend
-			float edgeVisiblePositionTop = (myTransform.position.y + spriteHeight/2) - camVerticalExtend;	//getting sprite's top visible position
+			float edgeVisiblePositionTop = (myTransform.position.y + spriteHeight/2) - camVerticalExtend;	//getting sprite's top visible edge
 			
 			if(cam.transform.position.y >= edgeVisiblePositionTop - offsetY)
 			{
