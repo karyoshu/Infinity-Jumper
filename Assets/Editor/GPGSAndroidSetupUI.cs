@@ -140,26 +140,26 @@ public class GPGSAndroidSetupUI : EditorWindow {
     }
 
     private bool CheckAndWarnAboutGmsCoreVersion(string libProjAMFile) {
-        string manifestContents = GPGSUtil.ReadFile(libProjAMFile);
-        string[] fields = manifestContents.Split('\"');
-        int i;
-        long vercode = 0;
-        for(i = 0; i < fields.Length; i++) {
-            if (fields[i].Contains("android:versionCode") && i + 1 < fields.Length) {
-                vercode = System.Convert.ToInt64(fields[i + 1]);
-            }
-        }
-        if (vercode == 0) {
-            return EditorUtility.DisplayDialog(GPGSStrings.Warning, string.Format(
-                GPGSStrings.AndroidSetup.LibProjVerNotFound,
-                GooglePlayGames.PluginVersion.MinGmsCoreVersionCode),
-                GPGSStrings.Ok, GPGSStrings.Cancel);
-        } else if (vercode < GooglePlayGames.PluginVersion.MinGmsCoreVersionCode) {
-            return EditorUtility.DisplayDialog(GPGSStrings.Warning, string.Format(
-                GPGSStrings.AndroidSetup.LibProjVerTooOld, vercode,
-                GooglePlayGames.PluginVersion.MinGmsCoreVersionCode),
-                GPGSStrings.Ok, GPGSStrings.Cancel);
-        }
+        //string manifestContents = GPGSUtil.ReadFile(libProjAMFile);
+        //string[] fields = manifestContents.Split('\"');
+        //int i;
+        //long vercode = 0;
+        //for(i = 0; i < fields.Length; i++) {
+        //    if (fields[i].Contains("android:versionCode") && i + 1 < fields.Length) {
+        //        vercode = System.Convert.ToInt64(fields[i + 1]);
+        //    }
+        //}
+        //if (vercode == 0) {
+        //    return EditorUtility.DisplayDialog(GPGSStrings.Warning, string.Format(
+        //        GPGSStrings.AndroidSetup.LibProjVerNotFound,
+        //        GooglePlayGames.PluginVersion.MinGmsCoreVersionCode),
+        //        GPGSStrings.Ok, GPGSStrings.Cancel);
+        //} else if (vercode < GooglePlayGames.PluginVersion.MinGmsCoreVersionCode) {
+        //    return EditorUtility.DisplayDialog(GPGSStrings.Warning, string.Format(
+        //        GPGSStrings.AndroidSetup.LibProjVerTooOld, vercode,
+        //        GooglePlayGames.PluginVersion.MinGmsCoreVersionCode),
+        //        GPGSStrings.Ok, GPGSStrings.Cancel);
+        //}
         return true;
     }
 

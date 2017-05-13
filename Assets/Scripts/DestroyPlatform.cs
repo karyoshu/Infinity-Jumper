@@ -12,7 +12,7 @@ public class DestroyPlatform : MonoBehaviour {
 	}
 	void OnTriggerEnter2D()
 	{
-		if(player.rigidbody2D.velocity.y < 0)
+		if(player.GetComponent<Rigidbody2D>().velocity.y < 0)
 		{
 			//if player is coming down and touches this platform then call playerControl script's Jump() method and destroy this platform
 			playerControl.SendMessage ("Jump");

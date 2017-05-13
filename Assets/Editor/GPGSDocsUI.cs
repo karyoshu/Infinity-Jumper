@@ -84,10 +84,10 @@ public class GPGSDocsUI {
 
     [MenuItem("Google Play Games/About/About the Plugin...", false, 300)]
     public static void MenuItemAbout() {
-        EditorUtility.DisplayDialog(GPGSStrings.AboutTitle, GPGSStrings.AboutText +
-        GooglePlayGames.PluginVersion.VersionString + " (" +
-        string.Format("0x{0:X8}", GooglePlayGames.PluginVersion.VersionInt) + ")",
-            GPGSStrings.Ok);
+        //EditorUtility.DisplayDialog(GPGSStrings.AboutTitle, GPGSStrings.AboutText +
+        //GooglePlayGames.PluginVersion.VersionString + " (" +
+        //string.Format("0x{0:X8}", GooglePlayGames.PluginVersion.VersionInt) + ")",
+        //    GPGSStrings.Ok);
     }
 
     [MenuItem("Google Play Games/About/License...", false, 301)]

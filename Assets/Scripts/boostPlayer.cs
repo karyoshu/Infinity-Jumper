@@ -13,7 +13,7 @@ public class boostPlayer : MonoBehaviour {
 	}
 	void OnTriggerEnter2D()
 	{
-		if(player.rigidbody2D.velocity.y < 0)		//if player is going down and comes in contact than boost player
+		if(player.GetComponent<Rigidbody2D>().velocity.y < 0)		//if player is going down and comes in contact than boost player
 			playerControl.SendMessage ("Boost");
 	}
 }

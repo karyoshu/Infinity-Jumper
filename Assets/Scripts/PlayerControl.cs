@@ -21,28 +21,28 @@ public class PlayerControl : MonoBehaviour {
         #else
             float move = Input.GetAxis("Horizontal");
         #endif
-        rigidbody2D.velocity = new Vector2 (move * moveSpeed * Time.fixedDeltaTime, rigidbody2D.velocity.y);
-		anim.SetFloat ("vSpeed", rigidbody2D.velocity.y);
+        GetComponent<Rigidbody2D>().velocity = new Vector2 (move * moveSpeed * Time.fixedDeltaTime, GetComponent<Rigidbody2D>().velocity.y);
+		anim.SetFloat ("vSpeed", GetComponent<Rigidbody2D>().velocity.y);
 		anim.SetBool ("isGrounded", isGrounded);
 	}
 
 	void Jump()
 	{
 		//add positive velocity in y-axis
-		rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpVel * Time.deltaTime);
+		GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, jumpVel * Time.deltaTime);
 		isGrounded = false;		//make isGrounded parameter to false
-		audio.clip = jump [Random.Range (0, jump.Length)];		//play a random jump sound with a random pitch
-		audio.pitch = Random.Range(0.9f,1.1f);
-		audio.Play();
+		GetComponent<AudioSource>().clip = jump [Random.Range (0, jump.Length)];		//play a random jump sound with a random pitch
+		GetComponent<AudioSource>().pitch = Random.Range(0.9f,1.1f);
+		GetComponent<AudioSource>().Play();
 	}
 
     IEnumerator Boost()
 	{
 		//boosts the player on taking green ball
-        if(rigidbody2D.velocity.y < 0)
-		    rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 20);
+        if(GetComponent<Rigidbody2D>().velocity.y < 0)
+		    GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 20);
         else
-            rigidbody2D.velocity += new Vector2(rigidbody2D.velocity.x, 20);
+            GetComponent<Rigidbody2D>().velocity += new Vector2(GetComponent<Rigidbody2D>().velocity.x, 20);
 		isGrounded = false;
         Boosted = true;
         yield return new WaitForSeconds(4);
@@ -52,10 +52,10 @@ public class PlayerControl : MonoBehaviour {
     IEnumerator SuperBoost()
 	{
 		//super boosts player on taking blue ball
-        if (rigidbody2D.velocity.y < 0)
-            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 30);
+        if (GetComponent<Rigidbody2D>().velocity.y < 0)
+            GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 30);
         else
-            rigidbody2D.velocity += new Vector2(rigidbody2D.velocity.x, 30);
+            GetComponent<Rigidbody2D>().velocity += new Vector2(GetComponent<Rigidbody2D>().velocity.x, 30);
         isGrounded = false;
         Boosted = true;
         yield return new WaitForSeconds(6);
@@ -83,6 +83,6 @@ public class PlayerControl : MonoBehaviour {
 
     public void ToggleSound()
     {
-        audio.enabled = !audio.enabled;
+        GetComponent<AudioSource>().enabled = !GetComponent<AudioSource>().enabled;
     }
 }

@@ -8,10 +8,10 @@ public class HighScore : MonoBehaviour {
 	public static void setHighScore()
 	{
 		PlayerPrefs.SetInt ("HighScore", highScore);
-        Social.ReportScore(highScore, "CgkIhLabw8YREAIQAQ", (bool success) =>
-        {
-            // handle success or failure
-        });
+        //Social.ReportScore(highScore, "CgkIhLabw8YREAIQAQ", (bool success) =>
+        //{
+        //    // handle success or failure
+        //});
         
 	}
 

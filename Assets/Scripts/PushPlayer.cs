@@ -12,7 +12,7 @@ public class PushPlayer : MonoBehaviour {
 	}
 	void OnTriggerEnter2D()
 	{
-		if(player.rigidbody2D.velocity.y < 0)	//if player is coming downwards and not going up, trigger Jump() method of PlayerControl Script
+		if(player.GetComponent<Rigidbody2D>().velocity.y < 0)	//if player is coming downwards and not going up, trigger Jump() method of PlayerControl Script
 		{
 			playerControl.SendMessage ("Jump");
 		}

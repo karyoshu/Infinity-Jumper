@@ -52,7 +52,7 @@ public class GameMaster : MonoBehaviour {
 		controlType = PlayerPrefs.GetString ("ControlType");	//getting control type from player preference
 		Screen.sleepTimeout = SleepTimeout.NeverSleep;			//stop screen from timing out
 		HighScore.getHighScore ();								//getting highScore into HighScore 
-        PlayGamesPlatform.Activate();							 
+        //PlayGamesPlatform.Activate();
         screenManager = gameObject.GetComponent<ScreenManager>();
 	}
 	
@@ -98,7 +98,7 @@ public class GameMaster : MonoBehaviour {
             if (score > HighScore.highScore)
                 HighScore.highScore = score;				//set highScore
             scoreGUI.text = score.ToString();
-            hiScoreGUI.text = HighScore.highScore.ToString();            
+            hiScoreGUI.text = "HISCORE: " + HighScore.highScore.ToString();            
         }
         
         //unlock achievements
@@ -172,7 +172,7 @@ public class GameMaster : MonoBehaviour {
 
     public void ToggleSound()
     {
-        audio.enabled = !audio.enabled;
+        GetComponent<AudioSource>().enabled = !GetComponent<AudioSource>().enabled;
     }
 	
     public void QuitGame()
@@ -187,7 +187,7 @@ public class GameMaster : MonoBehaviour {
 
     public void OpenLeaderboard()
     {
-        PlayGamesPlatform.Instance.ShowLeaderboardUI("CgkIhLabw8YREAIQAQ");
+        //PlayGamesPlatform.Instance.ShowLeaderboardUI("CgkIhLabw8YREAIQAQ");
     }
 
     public void unlockAchievements(int highScore)
