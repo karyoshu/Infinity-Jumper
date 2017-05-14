@@ -7,10 +7,16 @@ public class PlayerControl : MonoBehaviour {
 	public bool isGrounded = true;		//to check if player touched the ground or not
 	public float moveSpeed = 200;		//player movement speed sideways
 	public AudioClip[] jump;			//array containing jump audio clips
-    public static bool Boosted = false;	//to check if player was recently boosted or not
-	// Use this for initialization
+    public static bool Boosted = false; //to check if player was recently boosted or not
+                                        // Use this for initialization
+
+    Rigidbody2D rb;
+    AudioSource audioSource;
+
 	void Awake () {
 		anim = transform.GetComponent<Animator> ();
+        rb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
 	}
 
 	
@@ -21,28 +27,28 @@ public class PlayerControl : MonoBehaviour {
         #else
             float move = Input.GetAxis("Horizontal");
         #endif
-        GetComponent<Rigidbody2D>().velocity = new Vector2 (move * moveSpeed * Time.fixedDeltaTime, GetComponent<Rigidbody2D>().velocity.y);
-		anim.SetFloat ("vSpeed", GetComponent<Rigidbody2D>().velocity.y);
+        rb.velocity = new Vector2 (move * moveSpeed * Time.fixedDeltaTime, rb.velocity.y);
+		anim.SetFloat ("vSpeed", rb.velocity.y);
 		anim.SetBool ("isGrounded", isGrounded);
 	}
 
 	void Jump()
 	{
 		//add positive velocity in y-axis
-		GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, jumpVel * Time.deltaTime);
+		rb.velocity = new Vector2(rb.velocity.x, jumpVel * Time.deltaTime);
 		isGrounded = false;		//make isGrounded parameter to false
-		GetComponent<AudioSource>().clip = jump [Random.Range (0, jump.Length)];		//play a random jump sound with a random pitch
-		GetComponent<AudioSource>().pitch = Random.Range(0.9f,1.1f);
-		GetComponent<AudioSource>().Play();
+		audioSource.clip = jump [Random.Range (0, jump.Length)];		//play a random jump sound with a random pitch
+		audioSource.pitch = Random.Range(0.9f,1.1f);
+		audioSource.Play();
 	}
 
     IEnumerator Boost()
 	{
 		//boosts the player on taking green ball
-        if(GetComponent<Rigidbody2D>().velocity.y < 0)
-		    GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 20);
+        if(rb.velocity.y < 0)
+		    rb.velocity = new Vector2(rb.velocity.x, 20);
         else
-            GetComponent<Rigidbody2D>().velocity += new Vector2(GetComponent<Rigidbody2D>().velocity.x, 20);
+            rb.velocity += new Vector2(rb.velocity.x, 20);
 		isGrounded = false;
         Boosted = true;
         yield return new WaitForSeconds(4);
@@ -52,10 +58,10 @@ public class PlayerControl : MonoBehaviour {
     IEnumerator SuperBoost()
 	{
 		//super boosts player on taking blue ball
-        if (GetComponent<Rigidbody2D>().velocity.y < 0)
-            GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 30);
+        if (rb.velocity.y < 0)
+            rb.velocity = new Vector2(rb.velocity.x, 30);
         else
-            GetComponent<Rigidbody2D>().velocity += new Vector2(GetComponent<Rigidbody2D>().velocity.x, 30);
+            rb.velocity += new Vector2(rb.velocity.x, 30);
         isGrounded = false;
         Boosted = true;
         yield return new WaitForSeconds(6);
@@ -83,6 +89,6 @@ public class PlayerControl : MonoBehaviour {
 
     public void ToggleSound()
     {
-        GetComponent<AudioSource>().enabled = !GetComponent<AudioSource>().enabled;
+        audioSource.enabled = !audioSource.enabled;
     }
 }
